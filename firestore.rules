@@ -1,0 +1,43 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    match /competitors/{competitorId} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+
+    match /content/{docId} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+
+    match /users/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+
+      allow create: if signedIn()
+        && request.auth.uid == uid
+        && request.resource.data.role == 'viewer'
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.keys().hasOnly(['email', 'role']);
+
+      // Roles are granted by hand in the Firestore console, which bypasses rules.
+      allow update, delete: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
