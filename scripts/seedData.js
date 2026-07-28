@@ -31,6 +31,7 @@ export const competitors = {
     name: 'Rippling',
     order: 1,
     stats: [
+      { label: 'Contractor mgmt', value: 'Bundled, not standalone' },
       { label: 'EOR', value: '$499–599/mo, quote-only' },
       { label: 'Lock-in', value: 'Annual + minimum headcount, mandatory' },
       { label: 'FX markup', value: 'Undisclosed (est. 2–10%)' },

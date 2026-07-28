@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { signOut } from 'firebase/auth';
 import useAuth from './hooks/useAuth.js';
@@ -118,6 +118,20 @@ describe('App', () => {
 
     await user.click(screen.getByText('Discovery'));
     expect(screen.getByRole('heading', { level: 2, name: 'Challenges' })).toBeInTheDocument();
+  });
+
+  it('shows the pricing cheat sheet tab and lets a vendor header jump to that profile', async () => {
+    mockSignedIn();
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole('button', { name: 'Pricing cheat sheet' }));
+    expect(screen.getByText('$599/mo')).toBeInTheDocument();
+    expect(screen.getByText('$399/mo')).toBeInTheDocument();
+
+    const table = screen.getByRole('table');
+    await user.click(within(table).getByRole('button', { name: 'Rippling' }));
+    expect(screen.getByText('Rippling quote')).toBeInTheDocument();
   });
 
   it('shows a loading indicator in the panel while battlecard data is loading', () => {

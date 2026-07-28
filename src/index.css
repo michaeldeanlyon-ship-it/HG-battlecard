@@ -189,6 +189,12 @@ li.info{background:var(--blue-bg);border-left:3px solid var(--blue);}
 .doc th,.doc td{border:1px solid var(--border);padding:8px 10px;text-align:left;color:var(--text-dim);vertical-align:top;}
 .doc th{color:var(--text);font-family:'Space Grotesk',sans-serif;font-weight:600;}
 
+.pricing-table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0 4px;}
+.pricing-table th,.pricing-table td{border:1px solid var(--border);padding:8px 10px;text-align:left;color:var(--text-dim);vertical-align:top;white-space:nowrap;}
+.pricing-table thead th{color:var(--text);font-family:'Space Grotesk',sans-serif;font-weight:600;}
+.pricing-table tbody td:first-child{color:var(--text);font-weight:500;white-space:normal;}
+.pricing-table .linkbtn{white-space:nowrap;}
+
 /* ── App shell ───────────────────────────────────────── */
 .topbar{
   display:flex;
@@ -353,4 +359,10 @@ li.info{background:var(--blue-bg);border-left:3px solid var(--blue);}
   /* Four-column comparison table scrolls instead of crushing the layout. */
   .doc-scroll{overflow-x:auto;}
   .doc table{min-width:480px;}
+}
+
+/* Pricing cheat sheet: 7 columns, always scroll on narrow screens. */
+.pricing-scroll{overflow-x:auto;}
+@media (max-width:900px){
+  .pricing-table{min-width:720px;}
 }

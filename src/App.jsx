@@ -7,6 +7,7 @@ import LoginScreen from './components/LoginScreen.jsx';
 import TabBar from './components/TabBar.jsx';
 import ProfilePanel from './components/ProfilePanel.jsx';
 import DocPanel from './components/DocPanel.jsx';
+import PricingCheatSheet from './components/PricingCheatSheet.jsx';
 
 const COMPETITOR_LISTS = [
   { key: 'weak', title: "Where they're weak", dot: 'red',   li: 'weak' },
@@ -36,6 +37,9 @@ function Battlecard({ user, isAdmin }) {
     ...competitors.map((c) => ({ key: c.id, name: c.name, kind: 'competitor' })),
     ...(content.hireglobal
       ? [{ key: 'hireglobal', name: content.hireglobal.name, kind: 'own', accent: true }]
+      : []),
+    ...(content.hireglobal
+      ? [{ key: 'pricing', name: 'Pricing cheat sheet', kind: 'pricing' }]
       : []),
     ...DOC_IDS.filter((id) => content[id]).map((id) => ({
       key: id,
@@ -82,6 +86,12 @@ function Battlecard({ user, isAdmin }) {
             lists={HIREGLOBAL_LISTS}
             isAdmin={isAdmin}
             onSave={(patch) => saveContent('hireglobal', patch)}
+          />
+        ) : activeTab.kind === 'pricing' ? (
+          <PricingCheatSheet
+            hireglobal={content.hireglobal}
+            competitors={competitors}
+            onSelectVendor={setSelected}
           />
         ) : (
           <DocPanel
